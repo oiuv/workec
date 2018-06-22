@@ -130,12 +130,31 @@ class EC
 
     /*
      * 批量精确查询客户
+     * @param array | String $data 参数可以是手机号、手机号数组，或crmId二维数组：[ ['crmId' => 123], ['crmId' => 456], ['crmId' => 789]]
      */
     public function getCustomer($data)
     {
-        $data = [
-            'list' => $data
-        ];
+        if (is_array($data)) {
+            if (array_key_exists('crmId', $data[0]))
+                $data = [
+                    'list' => $data
+                ];
+            else {
+                $data = array_map(function ($mobile) {
+                    return [
+                        'mobile' => $mobile
+                    ];
+                }, $data);
+                $data = [
+                    'list' => $data
+                ];
+            }
+        } else
+            $data = [
+                'list' => [
+                    ['mobile' => $data]
+                ]
+            ];
         $response = $this->client('get', 'customer/get', $data);
         return $response;
     }
