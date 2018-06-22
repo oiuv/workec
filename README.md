@@ -46,7 +46,7 @@ $data = ['13800138000', '13900139000'];
 //通过crmId批量查询客户
 $data = [['crmId' => 123], ['crmId' => 456], ['crmId' => 789]]
 
-echo $test->getCustomer($data);
+echo $ec->getCustomer($data);
 ```
 
 > 创建客户
@@ -60,7 +60,7 @@ $data = [
     'f_memo'    => 'API创建客户'
 ];
 
-echo $test->addCustomer($data);
+echo $ec->addCustomer($data);
 ```
 
 > 修改客户资料
@@ -73,7 +73,7 @@ $data = [
     'f_step'    => 4
 ];
 
-echo $test->updateCustomer($data);
+echo $ec->updateCustomer($data);
 ```
 
 > 导出历史电话记录
@@ -84,7 +84,7 @@ $data = [
     'month' => 05,
 ];
 
-echo $test->telRecordHistory($data);
+echo $ec->telRecordHistory($data);
 ```
 > 更多方法看源码并参考EC开放平台技术文档
 
