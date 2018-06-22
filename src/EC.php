@@ -130,7 +130,7 @@ class EC
 
     /*
      * 批量精确查询客户
-     * @param array | String $data 参数可以是手机号、手机号数组，或crmId二维数组：[ ['crmId' => 123], ['crmId' => 456], ['crmId' => 789]]
+     * @param array | String $data 参数可以是手机号、手机号数组，或crmId二维数组：[['crmId' => 123], ['crmId' => 456], ['crmId' => 789]]
      */
     public function getCustomer($data)
     {

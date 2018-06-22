@@ -25,14 +25,14 @@ $ec = new EC('corpId', 'appId', 'appSecret');
 
 ```
 
-### 获取部门和员工信息
+> 获取部门和员工信息
 ```php
 
 echo $ec->structure();
 
 ```
 
-### 获取指定员工信息
+> 获取指定员工信息
 ```php
 
 $mobile = '13800138000';
@@ -41,7 +41,7 @@ echo $ec->findUserInfoById($mobile);
 
 ```
 
-### 创建客户
+> 创建客户
 ```php
 
 $data = [
@@ -51,7 +51,24 @@ $data = [
     'f_channel' => '直接输入',
     'f_memo'    => 'API创建客户'
 ];
+
 echo $test->addCustomer($data);
+
+```
+
+> 批量精确查询客户
+```php
+
+//通过手机号查询单个客户
+$data = '13800138000';
+
+//通过手机号批量查询客户
+$data = ['13800138000', '13900139000'];
+
+//通过crmId批量查询客户
+$data = [['crmId' => 123], ['crmId' => 456], ['crmId' => 789]]
+
+echo $test->getCustomer($data);
 
 ```
 
