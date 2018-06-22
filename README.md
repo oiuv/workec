@@ -41,6 +41,20 @@ echo $ec->findUserInfoById($mobile);
 
 ```
 
+### 创建客户
+```php
+
+$data = [
+    'optUserId' => 123456,
+    'f_name'    => '测试API',
+    'f_mobile'  => '13800138000',
+    'f_channel' => '直接输入',
+    'f_memo'    => 'API创建客户'
+];
+echo $test->addCustomer($data);
+
+```
+
 > 更多方法看源码并参考EC开放平台技术文档
 
 - [EC开放平台技术文档](https://open.workec.com/apidoc/index.html)
