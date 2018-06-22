@@ -1,0 +1,21 @@
+{
+    "name": "oiuv/workec",
+    "description": "EC开放平台API",
+    "type": "library",
+    "require": {
+        "php": ">=5.6",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Oiuv\\WorkEc\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Xuefeng",
+            "email": "i@oiuv.cn"
+        }
+    ]
+}
