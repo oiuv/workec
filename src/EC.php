@@ -1,9 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: xuefeng
- * Date: 2018-06-21
- * Time: 19:14
+ * EC开放平台API
+ * @author oiuv <i@oiuv.cn>
+ * @version Release: 1.1.1
+ * @link https://open.workec.com/apidoc/index.html
  */
 
 namespace Oiuv\WorkEc;
@@ -122,7 +122,7 @@ class EC
     /*
      * 批量创建客户
      */
-    public function customerCreate($data)
+    public function createCustomer($data)
     {
         $response = $this->client('post', 'customer/create', $data);
         return $response;
@@ -322,6 +322,9 @@ class EC
      */
     public function saveUserTrajectory($data)
     {
+        $data = [
+            'list' => $data
+        ];
         $response = $this->client('post', 'trajectory/saveUserTrajectory', $data);
         return $response;
     }
