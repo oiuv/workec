@@ -2,7 +2,7 @@
 /**
  * EC开放平台API
  * @author oiuv <i@oiuv.cn>
- * @version Release: 1.1.1
+ * @version 1.1.2
  * @link https://open.workec.com/apidoc/index.html
  */
 
@@ -14,25 +14,25 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class EC
 {
-    /*
+    /**
      * 公司ID
-     * @var long
+     * @var int
      */
     private $corpId;
 
-    /*
+    /**
      * EC APP ID
-     * @var long
+     * @var double
      */
     private $appId;
 
-    /*
+    /**
      * app_secret
      * @var String
      */
     private $appSecret;
 
-    /*
+    /**
      * HTTP 客户端
      */
     private $client;
@@ -70,7 +70,7 @@ class EC
         }
     }
 
-    /*
+    /**
      *  获取access_token
      */
     public function accessToken()
@@ -85,7 +85,7 @@ class EC
             return false;
     }
 
-    /*
+    /**
      *  获取部门和员工信息
      */
     public function structure()
@@ -94,11 +94,12 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      *  获取指定员工信息
      * @param String $account 用户账号(手机号码)
      * @param String $userId 用户ID
      * $userId和$account必须填写一个，如果都填，以$userId为准
+     * @return string
      */
     public function findUserInfoById($account = '', $userId = '')
     {
@@ -110,7 +111,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 创建客户
      */
     public function addCustomer($data)
@@ -119,7 +120,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 批量创建客户
      */
     public function createCustomer($data)
@@ -128,9 +129,10 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 批量精确查询客户
      * @param array | String $data 参数可以是手机号、手机号数组，或crmId二维数组：[['crmId' => 123], ['crmId' => 456], ['crmId' => 789]]
+     * @return string
      */
     public function getCustomer($data)
     {
@@ -159,7 +161,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      *  根据条件分页查询客户
      */
     public function rangeQueryCustomer($data)
@@ -168,9 +170,10 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 获取自定义字段信息
      * @param Int $type 按资料类型传对应值： 1 客户资料 2 公司资料
+     * @return string
      */
     public function getCustomFieldMapping($type = 1)
     {
@@ -181,9 +184,10 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 获取员工客户库分组信息
-     * @param long $userId 员工ID
+     * @param int $userId 员工ID
+     * @return string
      */
     public function getCustomerGroup($userId)
     {
@@ -194,7 +198,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 修改客户资料
      */
     public function updateCustomer($data)
@@ -203,7 +207,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 获取客户来源信息
      */
     public function getChannelSource()
@@ -212,7 +216,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 变更客户跟进人
      */
     public function changeCrmFollowUser($data)
@@ -221,7 +225,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 放弃客户
      */
     public function abandonCustomer($data)
@@ -230,11 +234,12 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 获取删除的客户
      * @param String $startTime 查询删除客户的开始时间,格式yyyy-MM-dd HH:mm:ss
      * @param String $endTime 查询删除客户的截止时间,格式yyyy-MM-dd HH:mm:ss, 与startTime最大间隔7天
      * @param String $lastId 根据此参数来进行翻页。上一次请求得到的最后一条记录中的id，初始值可为""
+     * @return string
      */
     public function delcrms($startTime = '', $endTime = '', $lastId = '')
     {
@@ -247,7 +252,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 获取员工签到记录
      */
     public function getCrmVisitDetails($data)
@@ -256,12 +261,13 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 创建标签分组
-     * @param long $userId 操作人ID
+     * @param int $userId 操作人ID
      * @param String $name 标签分组名
      * @param String $color 分组颜色 默认值为 c1,取值范围[c1~c20]
      * @param int $type 分组类型 默认值为0 取值： 0 代表此分组的标签可以多选 1 代表此分组的标签只能单选
+     * @return string
      */
     public function addLabelGroup($userId, $name, $color = 'c1', $type = 0)
     {
@@ -275,11 +281,12 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 创建标签
      * @param String $name 标签名
      * @param String $groupValue 分组id或者分组名
-     * @param long $userId 操作人ID
+     * @param int $userId 操作人ID
+     * @return string
      */
     public function addLabel($name, $groupValue, $userId)
     {
@@ -292,7 +299,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 批量修改客户标签
      */
     public function updateLabel($data)
@@ -304,9 +311,10 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 获取标签信息
      * @param String $groupValue 分组id或者分组名
+     * @return string
      */
     public function getLabelInfo($groupValue = '')
     {
@@ -317,7 +325,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 批量添加跟进记录
      */
     public function saveUserTrajectory($data)
@@ -329,7 +337,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 导出跟进记录
      */
     public function findUserTrajectory($data)
@@ -338,7 +346,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 导出历史跟进记录
      */
     public function findHistoryUserTrajectory($data)
@@ -347,7 +355,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 导出电话记录
      */
     public function telRecord($data)
@@ -356,7 +364,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 导出历史电话记录
      */
     public function telRecordHistory($data)
@@ -365,7 +373,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 导出短信记录
      */
     public function sendSms($data)
@@ -374,7 +382,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 导出历史短信记录
      */
     public function sendSmsHistory($data)
@@ -383,7 +391,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 添加电话记录
      */
     public function addTelRecord($data)
@@ -395,7 +403,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 查询客户轨迹
      */
     public function getTrajectory($data)
@@ -404,7 +412,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 获取销售金额字段信息
      */
     public function getSalesFieldMapping()
@@ -413,7 +421,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 创建销售金额
      */
     public function addSales($data)
@@ -422,7 +430,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 修改销售金额
      */
     public function updateSales($data)
@@ -431,7 +439,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 更新销售金额状态
      */
     public function updateStatus($data)
@@ -440,7 +448,7 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 查询销售金额列表
      * @param array $data
      */
@@ -450,9 +458,10 @@ class EC
         return $response;
     }
 
-    /*
+    /**
      * 查询销售金额详情
-     * @param long $saleId 销售金额的id,在创建销售金额时返回的id，或者查询列表得到id。
+     * @param int $saleId 销售金额的id,在创建销售金额时返回的id，或者查询列表得到id。
+     * @return string
      */
     public function getSalesDetail($saleId)
     {
