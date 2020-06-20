@@ -4,7 +4,7 @@
  *
  * @author oiuv <i@oiuv.cn>
  *
- * @version 2.0.1
+ * @version 2.0.2
  *
  * @link https://open.workec.com/newdoc/
  */
@@ -84,7 +84,7 @@ class EC
     }
 
     /**
-     *  签名算法.
+     * 签名算法.
      *
      * @param int    $timeStamp
      * @param string $appId
@@ -102,7 +102,7 @@ class EC
     /**********客户相关接口**********/
 
     /**
-     * 修改客户标签（支持批量）.
+     * 修改客户标签(支持批量).
      */
     public function updateLabel($optUserId, $crmIds, $labels = null, $type = 0)
     {
@@ -163,7 +163,7 @@ class EC
     }
 
     /**
-     *  查询客户分组(请求协议错误！???).
+     * 查询客户分组(请求协议错误！???).
      */
     public function getCustomerGroup($userId)
     {
@@ -199,7 +199,7 @@ class EC
     /**
      * 分页查询客户信息.
      */
-    public function queryCustomer($mobile = null, $email = null, $step = null, $labelIds = null, $followUserId = null, $publicPondId = null, $modifyTime = null, $contactTime = null, $createTime = null, $sortField = null, $sortType = null, $pageSize = 200, $pageNo = 1)
+    public function queryCustomer($mobile = null, $email = null, $step = null, $labelIds = null, $followUserId = null, $publicPondId = null, $modifyTime = null, $contactTime = null, $createTime = null, $sortField = null, $sortType = 'asc', $pageSize = 200, $pageNo = 1)
     {
         $data = [
             'mobile'       => $mobile,
@@ -211,6 +211,27 @@ class EC
             'modifyTime'   => $modifyTime,
             'contactTime'  => $contactTime,
             'createTime'   => $createTime,
+            'orderBy'      => [
+                'sortField' => $sortField,
+                'sortType'  => $sortType,
+            ],
+            'pageInfo' => [
+                'pageSize' => $pageSize,
+                'pageNo'   => $pageNo,
+            ],
+        ];
+        $response = $this->client('post', 'customer/query', $data);
+
+        return $response;
+    }
+
+    /**
+     * 自定义分页查询客户信息.
+     */
+    public function getCustomer(array $detail = [], $sortField = null, $sortType = 'desc', $pageSize = 200, $pageNo = 1)
+    {
+        $data = $detail;
+        $data += [
             'orderBy'      => [
                 'sortField' => $sortField,
                 'sortType'  => $sortType,
@@ -271,7 +292,6 @@ class EC
             'optUserId' => $optUserId,
             'list'      => $list,
         ];
-
         $response = $this->client('post', 'customer/addCustomer', $data);
 
         return $response;
@@ -280,7 +300,7 @@ class EC
     /**
      * 合并客户.
      */
-    public function combineCustomers($optUserId, array $detail)
+    public function combineCustomer($optUserId, array $detail)
     {
         $data = [
             'optUserId' => $optUserId,
@@ -335,12 +355,104 @@ class EC
 
     /**********异步任务相关接口**********/
 
+    /**
+     * 创建任务.
+     */
+    public function createTask($taskName, $type, array $detail)
+    {
+        $data = [
+            'taskName' => $taskName,
+            'type'     => $type,
+        ];
+        $data += $detail;
+
+        $response = $this->client('post', 'asynchronization/create', $data);
+
+        return $response;
+    }
+
+    /**
+     * 查询任务.
+     */
+    public function queryTask($taskId, $taskStatus)
+    {
+        $data = [
+            'taskId'     => $taskId,
+            'taskStatus' => $taskStatus,
+        ];
+        $response = $this->client('post', 'asynchronization/query', $data);
+
+        return $response;
+    }
+
     /**********机器人相关接口**********/
+
+    /**
+     * 增加任务.
+     */
+    public function addTask($title, $type, $userId, $time, $finishTime, $finish, $total, $craft, $robotId)
+    {
+        $data = [
+            'title'      => $title,
+            'type'       => $type,
+            'userId'     => $userId,
+            'time'       => $time,
+            'finishTime' => $finishTime,
+            'finish'     => $finish,
+            'total'      => $total,
+            'craft'      => $craft,
+            'robotId'    => $robotId,
+        ];
+
+        $response = $this->client('post', 'robot/addtask', $data);
+
+        return $response;
+    }
+
+    /**
+     * 增加任务记录.
+     */
+    public function addTaskRecord($data)
+    {
+        $response = $this->client('post', 'robot/addtaskrecord', $data);
+
+        return $response;
+    }
+
+    /**
+     * 更新任务.
+     */
+    public function updateTask($data)
+    {
+        $response = $this->client('post', 'robot/updatetask', $data);
+
+        return $response;
+    }
 
     /**********组织架构相关接口**********/
 
     /**
-     *  获取部门和员工信息.
+     * 创建部门.
+     */
+    public function createDept($data)
+    {
+        $response = $this->client('post', 'org/dept/create', $data);
+
+        return $response;
+    }
+
+    /**
+     * 编辑部门.
+     */
+    public function editDept($data)
+    {
+        $response = $this->client('post', 'org/dept/edit', $data);
+
+        return $response;
+    }
+
+    /**
+     * 获取架构信息.
      */
     public function structure()
     {
@@ -349,7 +461,37 @@ class EC
         return $response;
     }
 
+    /**
+     * 创建员工.
+     */
+    public function createUser($data)
+    {
+        $response = $this->client('post', 'org/user/create', $data);
+
+        return $response;
+    }
+
+    /**
+     * 启用/禁用员工.
+     */
+    public function User($data)
+    {
+        $response = $this->client('post', 'org/user/onoff', $data);
+
+        return $response;
+    }
+
     /**********记录相关接口**********/
+
+    /**
+     * 电话外呼.
+     */
+    public function call($data)
+    {
+        $response = $this->client('post', 'record/call', $data);
+
+        return $response;
+    }
 
     /**
      * 电话空闲用户.
@@ -364,7 +506,37 @@ class EC
         return $response;
     }
 
+    /**
+     * 短信记录.
+     */
+    public function smsRecord($data)
+    {
+        $response = $this->client('post', 'record/smsRecord', $data);
+
+        return $response;
+    }
+
+    /**
+     * 电话记录.
+     */
+    public function telRecord($data)
+    {
+        $response = $this->client('post', 'record/telRecord', $data);
+
+        return $response;
+    }
+
     /**********配置相关接口**********/
+
+    /**
+     * 获取自定义字段.
+     */
+    public function getFieldMapping()
+    {
+        $response = $this->client('get', 'config/getFieldMapping');
+
+        return $response;
+    }
 
     /**
      * 获取标签信息.
@@ -376,5 +548,86 @@ class EC
         return $response;
     }
 
+    /**
+     * 获取业务组信息.
+     */
+    public function getPubicPond()
+    {
+        $response = $this->client('get', 'config/getPubicPond');
+
+        return $response;
+    }
+
     /**********统计相关接口**********/
+
+    /**
+     * 电话-数字图接口.
+     */
+    public function phoneDigitalMap($data)
+    {
+        $response = $this->client('post', 'statistics/digitalMap/phone', $data);
+
+        return $response;
+    }
+
+    /**
+     * 电话-折线图接口.
+     */
+    public function phoneLineGraph($data)
+    {
+        $response = $this->client('post', 'statistics/lineGraph/phone', $data);
+
+        return $response;
+    }
+
+    /**
+     * 工作效率-数字图接口.
+     */
+    public function workefficDigitalMap($data)
+    {
+        $response = $this->client('post', 'statistics/digitalMap/workeffic', $data);
+
+        return $response;
+    }
+
+    /**
+     * 工作效率-柱状图接口.
+     */
+    public function workfficHistogram($data)
+    {
+        $response = $this->client('post', 'statistics/histogram/workeffic', $data);
+
+        return $response;
+    }
+
+    /**
+     * 标签-数字图接口.
+     */
+    public function tagDigitalMap($data)
+    {
+        $response = $this->client('post', 'statistics/digitalMap/tag', $data);
+
+        return $response;
+    }
+
+    /**
+     * 标签-柱状图接口.
+     */
+    public function tagHistogram($data)
+    {
+        $response = $this->client('post', 'statistics/histogram/tag', $data);
+
+        return $response;
+    }
+
+    /**
+     * 客户数量-数字图接口.
+     */
+    public function crmDigitalMap($data)
+    {
+        $response = $this->client('post', 'statistics/digitalMap/crmQuantity', $data);
+
+        return $response;
+    }
+
 }
