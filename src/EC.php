@@ -377,7 +377,7 @@ class EC
     }
 
     /**
-     * 手机查询客户(判重)
+     * 手机查询客户(判重).
      *
      * @param string $mobile           手机号码，多个号码英文逗号分开，最多50个，系统手机号码或者自定义手机号码
      * @param string $maxNumsPreMobile 每个号码最多返回多少个 CustomerInfoItem 明细数据，如果只关心是否重复建议设置为0，如重复数据不多，可根据需求设置，建议小于100，如不设置默认值为1
@@ -472,7 +472,7 @@ class EC
     public function getCustomerGroup($userId)
     {
         $data = "?userId=$userId";
-        $response = $this->client('GET', 'customer/getCustomerGroup' . $data);
+        $response = $this->client('GET', 'customer/getCustomerGroup'.$data);
 
         return $response;
     }
@@ -761,7 +761,7 @@ class EC
     public function telRecordHistoryQuery($startTime, $endTime, $preLastWasteId = null, $preLastStartTime = null, $pageSize = 200, $phoneNo = '', $userIds = '', $crmIds = '')
     {
         $data = [
-            'date' =>[
+            'date' => [
                 'startTime' => $startTime,
                 'endTime'   => $endTime,
             ],
@@ -814,9 +814,9 @@ class EC
     /**
      * 组织架构 - 获取指定员工信息.
      *
-     * @param string $account   用户账号(登录账号，不一定是手机号码)。userId、account 必须填写一个。
-     * @param int    $userId    用户ID。 userId、account 必须填写一个，另一个可为null。
-     * @param bool   $deptInfo  是否返回部门id和部门名称, 默认 false ,不返回
+     * @param string $account  用户账号(登录账号，不一定是手机号码)。userId、account 必须填写一个。
+     * @param int    $userId   用户ID。 userId、account 必须填写一个，另一个可为null。
+     * @param bool   $deptInfo 是否返回部门id和部门名称, 默认 false ,不返回
      */
     public function findUserInfoById($account, $userId = null, $deptInfo = false)
     {
@@ -1299,7 +1299,7 @@ class EC
      * @param string $startDate   开始时间，格式：yyyy-MM-dd
      * @param string $endDate     结束时间，格式：yyyy-MM-dd，注意结束时间不能大于开始时间 31 天
      * @param array  $userIdList  用户id列表，可选参数
-    */
+     */
     public function getTopStepCountByChannel($topNum, $startStepId, $endStepId, $startDate, $endDate, array $userIdList = [])
     {
         $data = [
@@ -1307,7 +1307,7 @@ class EC
             'startStepId' => $startStepId,
             'endStepId'   => $endStepId,
             'userIdList'  => $userIdList,
-            'date'        =>[
+            'date'        => [
                 'startDate' => $startDate,
                 'endDate'   => $endDate,
             ],
@@ -1328,7 +1328,7 @@ class EC
     {
         $data = [
             'userIdList' => $userIdList,
-            'date'       =>[
+            'date'       => [
                 'startDate' => $startDate,
                 'endDate'   => $endDate,
             ],
