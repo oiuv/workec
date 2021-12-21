@@ -10,9 +10,7 @@
 ## 安装
 
 ```shell
-
-$ composer require "oiuv/workec"
-
+composer require "oiuv/workec"
 ```
 
 ## 使用
@@ -30,11 +28,14 @@ echo $ec->structure();
 
 > 查询客户
 ```php
-//通过手机号查询单个客户
-$mobile = '13800138000';
-echo $ec->queryCustomer($mobile);
+// 通过条件查询客户列表
+echo $ec->queryList(['name'=>'测试']);
 
-//通过crmId批量查询客户
+// 通过手机号查询单个客户
+$mobile = 13800138000;
+echo $ec->getCustomer($mobile);
+
+// 通过crmId批量查询客户
 $crmIds = '12345,14336,13093';
 echo $ec->preciseQueryCustomer($crmIds);
 ```
@@ -105,36 +106,16 @@ echo $ec->batchUpdateCustomer($list);
 ```
 ### 方法列表
 
-| 方法 | 说明 |
-| ---- | ---- |
-| updateLabel | 修改客户标签(支持批量) |
-| queryLabel | 查询客户标签(支持批量) |
-| abandonCustomer | 放弃客户(支持批量) |
-| customerChangeUser | 变更跟进人(支持批量) |
-| getCustomerGroup | 查询客户分组(请求协议错误！???) |
-| getTrajectory | 查询客户轨迹 |
-| queryCustomer | 分页查询客户信息 |
-| getCustomer | 自定义分页查询客户信息 |
-| preciseQueryCustomer | 批量查询客户信息 |
-| addCustomer | 创建客户 |
-| addCustomers | 批量创建客户 |
-| combineCustomer | 合并客户 |
-| updateCustomer | 修改客户信息 |
-| batchUpdateCustomer | 批量修改客户信息 |
-| updateStep | 修改客户阶段(支持批量) |
-| createDept | 创建部门 |
-| editDept | 编辑部门 |
-| structure | 获取架构信息 |
-| createUser | 创建员工 |
-| User | 启用/禁用员工 |
-| call | 电话外呼 |
-| smsRecord | 短信记录 |
-| telRecord | 电话记录 |
-| getLabelInfo | 获取标签信息 |
+本接口提供的所有方法请见以下文档，对未封装的接口，可自己调用`client()`方法实现。方法返回结果说明请从[EC开放平台技术文档](https://open.workec.com/newdoc/)查询。
 
-> 更多方法看源码并参考EC开放平台技术文档
+- [EC开放平台API接口](https://api.oiuv.cn/workec/)
+
+### 接口文档
 
 - [EC开放平台技术文档](https://open.workec.com/newdoc/)
+- [业务返回码说明](https://open.workec.com/newdoc/doc/1iqT8Bqqm)
+- [系统字段对照表](https://open.workec.com/newdoc/doc/1jRy6T9uy)
+- [api 认证信息查看](https://open.workec.com/newdoc/doc/7wQRq1umF)
 
 ## License
 
