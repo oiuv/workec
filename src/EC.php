@@ -443,7 +443,7 @@ class EC
             'pageInfo' => [
                 'pageNo'   => $pageNo,
                 'pageSize' => $pageSize,
-            ]
+            ],
         ];
         $data += $detail;
         $response = $this->client('post', 'customer/query', $data);
@@ -1534,7 +1534,7 @@ class EC
     }
 
     /**
-     * todo 上传订单附件
+     * todo 上传订单附件.
      */
 
     /**
@@ -1869,5 +1869,4 @@ class EC
 
         return $response;
     }
-
 }
