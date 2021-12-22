@@ -4,7 +4,7 @@
  *
  * @author oiuv <i@oiuv.cn>
  *
- * @version 2.1.0
+ * @version 2.1.1
  *
  * @link https://open.workec.com/newdoc/
  */
@@ -431,6 +431,27 @@ class EC
     }
 
     /**
+     * 分页查询客户信息 (和getCustomer()方法作用一至，只是自定义查询参数).
+     *
+     * @param int   $pageNo   当前处于第几页，从第一页开始算起
+     * @param int   $pageSize 分页大小，默认200,最多不能超过200
+     * @param array $detail   参数构造参考getCustomer()方法
+     */
+    public function getCustomers($pageNo = 1, $pageSize = 200, array $detail = [])
+    {
+        $data = [
+            'pageInfo' => [
+                'pageNo'   => $pageNo,
+                'pageSize' => $pageSize,
+            ]
+        ];
+        $data += $detail;
+        $response = $this->client('post', 'customer/query', $data);
+
+        return $response;
+    }
+
+    /**
      * 批量查询客户信息(建议使用 查询客户列表 接口代替).
      *
      * @param string $crmIds 客户id列表，多个id使用英文逗号分隔
@@ -462,6 +483,17 @@ class EC
         $response = $this->client('post', 'customer/queryCustomer', $data);
 
         return $response;
+    }
+
+    /**
+     * 导出客户（和queryCustomer()作用一至，只是固定排序，只用传sort）.
+     *
+     * @param int   $sort   分页参数，查询下一页的时候需要把上一页的返回的 sort 带上
+     * @param array $detail 可选查询条件字段，具体参考接口参数说明（https://open.workec.com/newdoc/doc/zDwrbi9Xc）
+     */
+    public function queryCustomers($sort = 0, array $detail = [])
+    {
+        return $this->queryCustomer([$sort], [['sortField'=>'crmId', 'sortType'=>'asc']], $detail);
     }
 
     /**
@@ -1356,10 +1388,214 @@ class EC
     }
 
     /**********销售计划相关接口**********/
-    // todo
+
+    /**
+     * 销售计划 - 获取销售计划企业模板信息.
+     *
+     * @param int $optUserId 操作员ID，可使用structure()方法获取
+     */
+    public function getPlanTemplate($optUserId)
+    {
+        $data = "?optUserId=$optUserId";
+        $response = $this->client('get', 'plan/getPlanTemplate'.$data);
+
+        return $response;
+    }
 
     /**********销售订单相关接口**********/
-    // todo
+
+    /**
+     * 获取订单附件.
+     *
+     * @param int $crmId  客户id
+     * @param int $saleId 订单id
+     * @param int $type   附件类型，枚举：3 4 5 (3订单附件 4回款附件 5合同附件)
+     */
+    public function getSalesFiles($crmId, $saleId, $type)
+    {
+        $data = [
+            'crmId'  => $crmId,
+            'saleId' => $saleId,
+            'type'   => $type,
+        ];
+        $response = $this->client('post', 'sales/getSalesFiles', $data);
+
+        return $response;
+    }
+
+    /**
+     * 获取订单字段信息.
+     */
+    public function getSalesFieldMapping()
+    {
+        $response = $this->client('get', 'sales/getSalesFieldMapping');
+
+        return $response;
+    }
+
+    /**
+     * 修改订单.
+     *
+     * @param array $data 具体参数请查询接口文档（https://open.workec.com/newdoc/doc/1VMpJ8JGE）
+     */
+    public function updateSales(array $data)
+    {
+        $response = $this->client('post', 'sales/updateSales', $data);
+
+        return $response;
+    }
+
+    /**
+     * 更新订单状态.
+     *
+     * @param array $data 具体参数请查询接口文档（https://open.workec.com/newdoc/doc/1VN5z86TM）
+     */
+    public function updateSaleStatus(array $data)
+    {
+        $response = $this->client('post', 'sales/updateStatus', $data);
+
+        return $response;
+    }
+
+    /**
+     * 查询订单列表.
+     *
+     * @param array $data 具体参数请查询接口文档（https://open.workec.com/newdoc/doc/1VNIDLS3j），creatTime和lastModifyTime必填其一
+     */
+    public function getSales(array $data)
+    {
+        $response = $this->client('post', 'sales/getSales', $data);
+
+        return $response;
+    }
+
+    /**
+     * 查询订单详情.
+     *
+     * @param int $saleId 订单的id，在创建订单时返回的id，或者查询列表得到id
+     */
+    public function getSalesDetail($saleId)
+    {
+        $data = "?saleId=$saleId";
+        $response = $this->client('GET', 'sales/getSalesDetail'.$data);
+
+        return $response;
+    }
+
+    /**
+     * 删除产品信息.
+     *
+     * @param int   $optUserId  用户id
+     * @param array $productIds 产品ids
+     */
+    public function deleteProduct($optUserId, array $productIds)
+    {
+        $data = [
+            'optUserId'  => $optUserId,
+            'productIds' => $productIds,
+        ];
+        $response = $this->client('post', 'sales/deleteProduct', $data);
+
+        return $response;
+    }
+
+    /**
+     * 修改产品信息.
+     *
+     * @param int   $optUserId 用户id
+     * @param array $product   产品信息
+     */
+    public function updateProduct($optUserId, array $product)
+    {
+        $data = [
+            'optUserId' => $optUserId,
+            'product'   => $product,
+        ];
+        $response = $this->client('post', 'sales/updateProduct', $data);
+
+        return $response;
+    }
+
+    /**
+     * 新增产品.
+     *
+     * @param int   $optUserId 用户id
+     * @param array $product   产品信息
+     */
+    public function addProduct($optUserId, array $product)
+    {
+        $data = [
+            'optUserId' => $optUserId,
+            'product'   => $product,
+        ];
+        $response = $this->client('post', 'sales/addProduct', $data);
+
+        return $response;
+    }
+
+    /**
+     * todo 上传订单附件
+     */
+
+    /**
+     * 获取产品分组.
+     *
+     * @param int $saleId 订单的id，在创建订单时返回的id，或者查询列表得到id
+     */
+    public function getProductGroupList()
+    {
+        $response = $this->client('GET', 'sales/getProductGroupList');
+
+        return $response;
+    }
+
+    /**
+     * 分页获取产品源数据.
+     *
+     * @param int $optUserId 用户id
+     * @param int $pageNo    第几页
+     * @param int $pageSize  一页几条
+     */
+    public function getProductList($optUserId, $pageNo, $pageSize)
+    {
+        $data = [
+            'optUserId' => $optUserId,
+            'pageNo'    => $pageNo,
+            'pageSize'  => $pageSize,
+        ];
+        $response = $this->client('post', 'sales/getProductList', $data);
+
+        return $response;
+    }
+
+    /**
+     * 创建订单.
+     *
+     * @param array $data 具体参数请查询接口文档（https://open.workec.com/newdoc/doc/2OMzKG0s1c）
+     */
+    public function addSales(array $data)
+    {
+        $response = $this->client('post', 'sales/addSales', $data);
+
+        return $response;
+    }
+
+    /**
+     * 订单产品明细查询.
+     *
+     * @param int   $userId  订单所属的用户id
+     * @param array $saleIds 订单id列表，最多10个saleid，最少一个
+     */
+    public function getProductsDetail($userId, array $saleIds)
+    {
+        $data = [
+            'userId'  => $userId,
+            'saleIds' => $saleIds,
+        ];
+        $response = $this->client('post', 'sales/getProductsDetail', $data);
+
+        return $response;
+    }
 
     /**********客户标签相关接口**********/
 
@@ -1404,9 +1640,9 @@ class EC
     public function addLabel($userId, $name, $groupValue)
     {
         $data = [
-            'userId'      => $userId,
-            'name'        => $name,
-            'groupValue'  => $groupValue,
+            'userId'     => $userId,
+            'name'       => $name,
+            'groupValue' => $groupValue,
         ];
         $response = $this->client('post', 'label/addLabel', $data);
 
@@ -1473,11 +1709,165 @@ class EC
     }
 
     /**********企业联系人相关接口**********/
-    // todo
+
+    /**
+     * 给企业客户新增一个联系人.
+     *
+     * @param int   $optUserId 操作人id
+     * @param int   $crmId     企业客户id
+     * @param array $detail    联系人详细信息，具体参数请查询接口文档（https://open.workec.com/newdoc/doc/2SJjr3qiRM）
+     */
+    public function addContactbook($optUserId, $crmId, array $detail)
+    {
+        $data = [
+            'optUserId'        => $optUserId,
+            'crmId'            => $crmId,
+            'crmContactBookVO' => $detail,
+        ];
+        $response = $this->client('post', 'contactbook/add', $data);
+
+        return $response;
+    }
+
+    /**
+     * 删除企业客户指定联系人.
+     *
+     * @param int $optUserId 操作人id
+     * @param int $crmId     企业客户id
+     * @param int $id        联系人id
+     */
+    public function deleteContactbook($optUserId, $crmId, $id)
+    {
+        $data = [
+            'optUserId' => $optUserId,
+            'crmId'     => $crmId,
+            'id'        => $id,
+        ];
+        $response = $this->client('post', 'contactbook/delete', $data);
+
+        return $response;
+    }
+
+    /**
+     * 更新企业客户指定联系人资料.
+     *
+     * @param int   $optUserId 操作人id
+     * @param int   $crmId     企业客户id
+     * @param int   $id        联系人id
+     * @param array $detail    联系人详细信息，具体参数请查询接口文档（https://open.workec.com/newdoc/doc/2SJkRkYpZY）
+     */
+    public function updateContactbook($optUserId, $crmId, $id, array $detail)
+    {
+        $data = [
+            'optUserId'        => $optUserId,
+            'crmId'            => $crmId,
+            'id'               => $id,
+            'crmContactBookVO' => $detail,
+        ];
+        $response = $this->client('post', 'contactbook/update', $data);
+
+        return $response;
+    }
+
+    /**
+     * 查询企业客户联系人.
+     *
+     * @param int $optUserId 操作人id
+     * @param int $crmId     企业客户id
+     */
+    public function listContactbook($optUserId, $crmId)
+    {
+        $data = [
+            'optUserId' => $optUserId,
+            'crmId'     => $crmId,
+        ];
+        $response = $this->client('post', 'contactbook/list', $data);
+
+        return $response;
+    }
 
     /**********推送通知相关接口**********/
-    // todo
+
+    /**
+     * 发送系统通知.
+     *
+     * @param int    $channelId    频道ID, 获取频道id : 企业管理后台 -> 应用互联 -> API开发接口 -> 应用消息推送
+     * @param string $bodyTitle    通知标题
+     * @param string $bodyContent  通知内容文本
+     * @param array  $receiver     接收者ID列表 ， 如果receiverType=1,则必须指定至少一个用户，最多 N 个用户
+     * @param int    $receiverType 接收者类型 1 用户 2 企业，默认为1
+     * @param string $style        样式 ,目前仅支持 D类样式、S类样式 , 样式不填或者填错默认为D01，更多可参考接口文档（https://open.workec.com/newdoc/doc/1l6XclDrJX）
+     * @param array  $detail       其它可用参数，具体可参考接口文档（https://open.workec.com/newdoc/doc/1l6XclDrJX）
+     */
+    public function sendMessage($channelId, $bodyTitle, $bodyContent, array $receiver, $receiverType = 1, $style = 'D01', array $detail = [])
+    {
+        $data = [
+            'channelId'    => $channelId,
+            'bodyTitle'    => $bodyTitle,
+            'bodyContent'  => $bodyContent,
+            'receiver'     => $receiver,
+            'receiverType' => $receiverType,
+            'style'        => $style,
+        ];
+        $data += $detail;
+        $response = $this->client('post', 'im/message/send', $data);
+
+        return $response;
+    }
+
+    /**
+     * 查询主动推送接口.
+     *
+     * @param string $beginTime 查询开始时间 , 格式: 2020-08-05 13:00:00
+     * @param string $endTime   查询结束时间 , 格式: 2020-08-07 13:00:00
+     * @param int    $pageSize  默认最多查询1000条记录
+     * @param bool   $onlyError 是否只是查询推送失败的 推送记录 , 默认是 true, 表示只查询失败的主动推送
+     */
+    public function getApiPush($beginTime, $endTime, $pageSize = 1000, $onlyError = true)
+    {
+        $data = [
+            'beginTime' => $beginTime,
+            'endTime'   => $endTime,
+            'pageSize'  => $pageSize,
+            'onlyError' => $onlyError,
+        ];
+        $response = $this->client('post', 'apipush/getApiPush', $data);
+
+        return $response;
+    }
 
     /**********其他接口**********/
-    // todo
+
+    /**
+     * 汇营销导入线索.
+     *
+     * @param array $data 汇营销线索导入数据，具体参考接口文档（https://open.workec.com/newdoc/doc/2PDQ5hfqZy）
+     */
+    public function importClue(array $data)
+    {
+        $response = $this->client('post', 'clue/import', $data);
+
+        return $response;
+    }
+
+    /**
+     * 获取全国地区.
+     */
+    public function getAreas()
+    {
+        $response = $this->client('get', 'config/getAreas');
+
+        return $response;
+    }
+
+    /**
+     * 获取行业.
+     */
+    public function getVocation()
+    {
+        $response = $this->client('get', 'config/getVocation');
+
+        return $response;
+    }
+
 }
