@@ -42,7 +42,7 @@ EC_APP_ID=XXXXXXXXX
 EC_APP_SECRET=XXXXX
 ```
 
-在`app/services.php`中增加以下配置：
+在`config/services.php`中增加以下配置：
 
 ```
 'workec' => [
