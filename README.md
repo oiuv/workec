@@ -4,7 +4,7 @@
 
 ## 环境需求
 
-- PHP >= 5.6
+- PHP >= 7.1.3
 
 ## 安装
 
@@ -14,13 +14,54 @@ composer require "oiuv/workec"
 
 ## 使用示例
 
+### 通过composer自动加载
+
 ```php
-// require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 use Oiuv\WorkEc\EC;
 
 $ec = new EC('corpId', 'appId', 'appSecret');
+// 获取部门和员工信息
+echo $ec->structure();
 ```
+
+### 在Laravel框架中使用
+
+在`.env`中增加以下配置：
+
+```
+EC_CORP_ID=XXXXXXXX
+EC_APP_ID=XXXXXXXXX
+EC_APP_SECRET=XXXXX
+```
+
+在`app/services.php`中增加以下内容（可选，配置缓存需要）：
+
+```
+'workec' => [
+    'corp_id' => env('EC_CORP_ID'),
+    'app_id' => env('EC_APP_ID'),
+    'app_secret' => env('EC_APP_SECRET'),
+],
+```
+
+```php
+// 方法参数注入的方式
+public function show(EC $ec)
+{
+    // 获取部门和员工信息
+    return $ec->structure();
+}
+// 使用Facade的方式
+public function show()
+{
+    // 获取部门和员工信息
+    return WorkEC::structure();
+}
+```
+
+---
 
 > 获取配置信息
 

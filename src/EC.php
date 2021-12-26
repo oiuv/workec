@@ -4,7 +4,7 @@
  *
  * @author oiuv <i@oiuv.cn>
  *
- * @version 2.1.1
+ * @version 2.2.0
  *
  * @link https://open.workec.com/newdoc/
  */

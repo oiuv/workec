@@ -3,13 +3,23 @@
     "description": "EC开放平台API",
     "type": "library",
     "require": {
-        "php": ">=5.6",
-        "guzzlehttp/guzzle": ">=6.0"
+        "php": ">=7.1.3",
+        "guzzlehttp/guzzle": ">=6.2.1"
     },
     "license": "MIT",
     "autoload": {
         "psr-4": {
             "Oiuv\\WorkEc\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Oiuv\\WorkEc\\ServiceProvider"
+            ],
+        "aliases": {
+            "WorkEC": "Oiuv\\WorkEc\\Facade"
+        }
         }
     },
     "authors": [
