@@ -12,7 +12,13 @@
 composer require "oiuv/workec"
 ```
 
-## 使用示例
+如果你的项目PHP版本低于v7.1.3，可安装 v2.1.1 版。
+
+```shell
+composer require oiuv/workec 2.1.1
+```
+
+## 使用
 
 ### 通过composer自动加载
 
@@ -36,7 +42,7 @@ EC_APP_ID=XXXXXXXXX
 EC_APP_SECRET=XXXXX
 ```
 
-在`app/services.php`中增加以下内容（可选，配置缓存需要）：
+在`app/services.php`中增加以下配置：
 
 ```
 'workec' => [
@@ -46,14 +52,21 @@ EC_APP_SECRET=XXXXX
 ],
 ```
 
+方法参数注入的方式调用
+
 ```php
-// 方法参数注入的方式
+use Oiuv\WorkEc\EC;
+
 public function show(EC $ec)
 {
     // 获取部门和员工信息
     return $ec->structure();
 }
-// 使用Facade的方式
+```
+
+使用Facade的方式调用
+
+```
 public function show()
 {
     // 获取部门和员工信息
@@ -62,6 +75,8 @@ public function show()
 ```
 
 ---
+
+### 示例
 
 > 获取配置信息
 

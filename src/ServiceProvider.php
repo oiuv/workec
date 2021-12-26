@@ -15,7 +15,7 @@ class ServiceProvider extends LaravelServiceProvider implements DeferrableProvid
     public function register()
     {
         $this->app->singleton(EC::class, function ($app) {
-            return new EC(env('EC_CORP_ID') || config('services.workec.corp_id'), env('EC_APP_ID') || config('services.workec.app_id'), env('EC_APP_SECRET') || config('services.workec.app_secret'));
+            return new EC(config('services.workec.corp_id'), config('services.workec.app_id'), config('services.workec.app_secret'));
         });
     }
 
