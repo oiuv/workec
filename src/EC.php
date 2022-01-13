@@ -14,6 +14,9 @@ namespace Oiuv\WorkEc;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
+/**
+ * EC客户管理系统API，第三方系统通过调用API，实现从EC中获取数据，或者写入数据。
+ */
 class EC
 {
     /**
@@ -42,6 +45,13 @@ class EC
      */
     private $client;
 
+    /**
+     * 构造方法，关于参数请查看文档（https://open.workec.com/newdoc/doc/7wQRq1umF）
+     *
+     * @param string $corpId    企业id
+     * @param string $appId     接口ID
+     * @param string $appSecret 接口密钥
+     */
     public function __construct($corpId = '', $appId = '', $appSecret = '')
     {
         $this->client = new Client(['base_uri' => 'https://open.workec.com/v2/']);
@@ -59,6 +69,13 @@ class EC
         }
     }
 
+    /**
+     * HTTP客户端
+     *
+     * @param string $method API请求方法
+     * @param string $uri    接口URI
+     * @param array  $data   请求数据
+     */
     public function client($method, $uri, $data = [])
     {
         // 获取当前时间戳
@@ -1832,6 +1849,94 @@ class EC
             'onlyError' => $onlyError,
         ];
         $response = $this->client('post', 'apipush/getApiPush', $data);
+
+        return $response;
+    }
+
+    /**********任务接口**********/
+
+    /**
+     * 新建任务规则.
+     *
+     * @param array $data 输入参数请参考接口文档（https://open.workec.com/newdoc/doc/2XqdKAKRiX）
+     */
+    public function taskCreate(array $data)
+    {
+        $response = $this->client('post', 'task/create', $data);
+
+        return $response;
+    }
+
+    /**
+     * 查询任务.
+     *
+     * @param array $data 输入参数请参考接口文档（https://open.workec.com/newdoc/doc/2XqmNNHZD9）
+     */
+    public function taskQuery(array $data)
+    {
+
+        $response = $this->client('post', 'task/query', $data);
+
+        return $response;
+    }
+
+    /**
+     * 任务详情（https://open.workec.com/newdoc/doc/2XqnHS6tRU）
+     *
+     * @param int $optUserId 操作人ID
+     * @param int $taskId    任务ID
+     */
+    public function taskDetail($optUserId, $taskId)
+    {
+        $data = [
+            'optUserId' => $optUserId,
+            'taskId'    => $taskId,
+        ];
+        $response = $this->client('post', 'task/detail', $data);
+
+        return $response;
+    }
+
+    /**
+     * 任务明细列表（https://open.workec.com/newdoc/doc/2XqoUbTM5f）
+     *
+     * @param int $optUserId 操作人ID
+     * @param int $taskId    任务ID
+     * @param int $exeType   执行状态: 0 待执行 1 已结束
+     * @param int $pageNo    第几页 默认1
+     * @param int $pageSize  每页几条 默认200
+     */
+    public function taskDetailList($optUserId, $taskId, $exeType = 0, $pageNo = 1, $pageSize = 200)
+    {
+        $data = [
+            'optUserId' => $optUserId,
+            'taskId'    => $taskId,
+            'exeType'   => $exeType,
+            'pageNo'    => $pageNo,
+            'pageSize'  => $pageSize,
+        ];
+        $response = $this->client('post', 'task/detailList', $data);
+
+        return $response;
+    }
+
+    /**
+     * 更改任务明细状态（https://open.workec.com/newdoc/doc/2XqpKn10PE）
+     *
+     * @param int   $optUserId 操作人ID
+     * @param int   $taskId    任务ID
+     * @param array $listIds   明细id列表
+     * @param int   $exeType   执行状态: 0 待执行 1 自动已执行 2 手动已执行
+     */
+    public function taskUpdateStatus($optUserId, $taskId, $listIds, $exeType = 0)
+    {
+        $data = [
+            'optUserId' => $optUserId,
+            'taskId'    => $taskId,
+            'listIds'   => $listIds,
+            'exeType'   => $exeType,
+        ];
+        $response = $this->client('post', 'task/updateStatus', $data);
 
         return $response;
     }

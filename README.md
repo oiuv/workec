@@ -44,7 +44,7 @@ EC_APP_SECRET=XXXXX
 
 在`config/services.php`中增加以下配置：
 
-```
+```php
 'workec' => [
     'corp_id' => env('EC_CORP_ID'),
     'app_id' => env('EC_APP_ID'),
@@ -66,7 +66,7 @@ public function show(EC $ec)
 
 使用Facade的方式调用
 
-```
+```php
 public function show()
 {
     // 获取部门和员工信息

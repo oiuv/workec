@@ -17,9 +17,9 @@
             "providers": [
                 "Oiuv\\WorkEc\\ServiceProvider"
             ],
-        "aliases": {
-            "WorkEC": "Oiuv\\WorkEc\\Facade"
-        }
+            "aliases": {
+                "WorkEC": "Oiuv\\WorkEc\\Facade"
+            }
         }
     },
     "authors": [
