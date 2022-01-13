@@ -46,7 +46,7 @@ class EC
     private $client;
 
     /**
-     * 构造方法，关于参数请查看文档（https://open.workec.com/newdoc/doc/7wQRq1umF）
+     * 构造方法，关于参数请查看文档（https://open.workec.com/newdoc/doc/7wQRq1umF）.
      *
      * @param string $corpId    企业id
      * @param string $appId     接口ID
@@ -70,7 +70,7 @@ class EC
     }
 
     /**
-     * HTTP客户端
+     * HTTP客户端.
      *
      * @param string $method API请求方法
      * @param string $uri    接口URI
@@ -1874,14 +1874,13 @@ class EC
      */
     public function taskQuery(array $data)
     {
-
         $response = $this->client('post', 'task/query', $data);
 
         return $response;
     }
 
     /**
-     * 任务详情（https://open.workec.com/newdoc/doc/2XqnHS6tRU）
+     * 任务详情（https://open.workec.com/newdoc/doc/2XqnHS6tRU）.
      *
      * @param int $optUserId 操作人ID
      * @param int $taskId    任务ID
@@ -1898,7 +1897,7 @@ class EC
     }
 
     /**
-     * 任务明细列表（https://open.workec.com/newdoc/doc/2XqoUbTM5f）
+     * 任务明细列表（https://open.workec.com/newdoc/doc/2XqoUbTM5f）.
      *
      * @param int $optUserId 操作人ID
      * @param int $taskId    任务ID
@@ -1921,7 +1920,7 @@ class EC
     }
 
     /**
-     * 更改任务明细状态（https://open.workec.com/newdoc/doc/2XqpKn10PE）
+     * 更改任务明细状态（https://open.workec.com/newdoc/doc/2XqpKn10PE）.
      *
      * @param int   $optUserId 操作人ID
      * @param int   $taskId    任务ID
